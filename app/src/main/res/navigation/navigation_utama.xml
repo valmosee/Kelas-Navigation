@@ -30,4 +30,9 @@
         android:name="uts.c14230225.kelas.DetailProfileFragment"
         android:label="fragment_detail_profile"
         tools:layout="@layout/fragment_detail_profile" />
+    <fragment
+        android:id="@+id/bahanFragment2"
+        android:name="uts.c14230225.kelas.BahanFragment"
+        android:label="fragment_bahan"
+        tools:layout="@layout/fragment_bahan" />
 </navigation>

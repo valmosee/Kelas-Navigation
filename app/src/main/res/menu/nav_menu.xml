@@ -18,6 +18,12 @@
         android:title="SETTING"/>
 
     <item
+        android:id="@+id/bahanFragment2"
+        android:icon="@drawable/outline_settings_24"
+        android:title="BAHAN"/>
+
+
+    <item
         android:title="CONFIDENTIAL">
         <menu>
             <group android:checkableBehavior="single">
