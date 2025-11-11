@@ -47,8 +47,19 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding!!.btnOpen.setOnClickListener {
+            val mBundle = Bundle()
+            mBundle.putString("param1", "AMBO")
             findNavController().navigate(R.id
-                .action_profileFragment_to_detailProfileFragment)
+                .action_profileFragment_to_detailProfileFragment,
+                mBundle
+            )
+        }
+
+        binding!!.btnOpenSafe.setOnClickListener {
+            val action = ProfileFragmentDirections.actionProfileFragmentToDetailProfileFragment(
+                "a@gmail.com"
+            )
+            findNavController().navigate(action)
         }
     }
 

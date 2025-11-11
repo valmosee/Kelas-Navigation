@@ -18,7 +18,8 @@
         <action
             android:id="@+id/action_profileFragment_to_detailProfileFragment"
             app:destination="@id/detailProfileFragment"
-            app:enterAnim="@android:anim/fade_in" />
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
@@ -29,7 +30,12 @@
         android:id="@+id/detailProfileFragment"
         android:name="uts.c14230225.kelas.DetailProfileFragment"
         android:label="fragment_detail_profile"
-        tools:layout="@layout/fragment_detail_profile" />
+        tools:layout="@layout/fragment_detail_profile" >
+        <argument
+            android:name="dataSatu"
+            app:argType="string"
+            android:defaultValue="-" />
+    </fragment>
     <fragment
         android:id="@+id/bahanFragment2"
         android:name="uts.c14230225.kelas.BahanFragment"
