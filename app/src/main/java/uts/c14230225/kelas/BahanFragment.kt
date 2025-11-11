@@ -42,7 +42,7 @@ class BahanFragment : Fragment() {
             data
         )
 
-        binding?.tambahbahan?.setOnClickListener {
+        binding?.addCart?.setOnClickListener {
             var nama = binding!!.namabahan.text.toString()
             var kategori = binding!!.kategoribahan.text.toString()
 

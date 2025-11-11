@@ -1,43 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="12dp"
     tools:context=".BahanFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/namabahan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Masukkan nama Bahan"
-            android:inputType="text"
-            android:text="" />
+    <ListView
+        android:id="@+id/lvbahan"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/namabahan"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/kategoribahan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Masukkan Kategori Bahan"
-            android:inputType="text"
-            android:text="" />
+    <EditText
+        android:id="@+id/namabahan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="Masukkan nama Bahan"
+        android:inputType="text"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="483dp" />
 
-        <Button
-            android:id="@+id/tambahbahan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Add" />
+    <EditText
+        android:id="@+id/kategoribahan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Masukkan Kategori Bahan"
+        android:inputType="text"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="@+id/namabahan"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/namabahan"
+        app:layout_constraintTop_toBottomOf="@+id/namabahan" />
 
-        <ListView
-            android:id="@+id/lvbahan"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
-</FrameLayout>
+    <EditText
+        android:id="@+id/gambarbahan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Masukkan URL Gambar"
+        android:inputType="text"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="@+id/kategoribahan"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/kategoribahan"
+        app:layout_constraintTop_toBottomOf="@+id/kategoribahan" />
+
+    <ImageButton
+        android:id="@+id/addCart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_shopping_cart_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/gambarbahan"
+        app:layout_constraintStart_toStartOf="@+id/gambarbahan"
+        app:layout_constraintTop_toBottomOf="@+id/gambarbahan" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
