@@ -1,5 +1,34 @@
 <resources>
     <string name="app_name">Kelas</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- String Array untuk Bahan -->
+    <string-array name="data_bahan">
+        <item>Gula Pasir-Bumbu-https://example.com/gula_pasir.jpg</item>
+        <item>Garam-Bumbu-https://example.com/garam.jpg</item>
+        <item>Merica Bubuk-Bumbu-https://example.com/merica.jpg</item>
+        <item>Ketumbar-Bumbu-https://example.com/ketumbar.jpg</item>
+        <item>Kunyit-Bumbu-https://example.com/kunyit.jpg</item>
+        <item>Jahe-Bumbu-https://example.com/jahe.jpg</item>
+        <item>Bawang Putih-Bumbu-https://example.com/bawang_putih.jpg</item>
+        <item>Bawang Merah-Bumbu-https://example.com/bawang_merah.jpg</item>
+        <item>Cabai Merah-Bumbu-https://example.com/cabai_merah.jpg</item>
+        <item>Kecap Manis-Bumbu-https://example.com/kecap_manis.jpg</item>
+        <item>Ayam-Daging-https://example.com/ayam.jpg</item>
+        <item>Sapi-Daging-https://example.com/sapi.jpg</item>
+        <item>Kambing-Daging-https://example.com/kambing.jpg</item>
+        <item>Ikan Salmon-Daging-https://example.com/salmon.jpg</item>
+        <item>Ikan Tuna-Daging-https://example.com/tuna.jpg</item>
+        <item>Udang-Daging-https://example.com/udang.jpg</item>
+        <item>Cumi-Daging-https://example.com/cumi.jpg</item>
+        <item>Telur Ayam-Daging-https://example.com/telur.jpg</item>
+        <item>Tempe-Protein Nabati-https://example.com/tempe.jpg</item>
+        <item>Tahu-Protein Nabati-https://example.com/tahu.jpg</item>
+        <item>Beras-Karbohidrat-https://example.com/beras.jpg</item>
+        <item>Kentang-Sayuran-https://example.com/kentang.jpg</item>
+        <item>Wortel-Sayuran-https://example.com/wortel.jpg</item>
+        <item>Tomat-Sayuran-https://example.com/tomat.jpg</item>
+        <item>Bayam-Sayuran-https://example.com/bayam.jpg</item>
+    </string-array>
 </resources>

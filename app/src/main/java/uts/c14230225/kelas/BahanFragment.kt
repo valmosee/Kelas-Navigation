@@ -31,11 +31,8 @@ class BahanFragment : Fragment() {
             inflater, container, false
         )
 
-        data.addAll(listOf("Gula-Bumbu-https://example.com/gula.jpg",
-            "Garam-Bumbu-https://example.com/garam.jpg",
-            "Merica-Bumbu-https://example.com/merica.jpg",
-            "Ayam-Daging-https://example.com/ayam.jpg",
-            "Sapi-Daging-https://example.com/sapi.jpg"))
+        val dataBahan = resources.getStringArray(R.array.data_bahan)
+        data.addAll(dataBahan)
 
         // Setup RecyclerView
         adapter = BahanAdapter(data) { position, selectedItem ->
