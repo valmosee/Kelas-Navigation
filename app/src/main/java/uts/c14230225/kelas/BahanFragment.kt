@@ -15,7 +15,6 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import uts.c14230225.kelas.databinding.FragmentBahanBinding
-import uts.c14230225.kelas.databinding.FragmentProfileBinding
 
 class BahanFragment : Fragment() {
 
@@ -42,23 +41,27 @@ class BahanFragment : Fragment() {
             data
         )
 
-        binding?.addCart?.setOnClickListener {
-            var nama = binding!!.namabahan.text.toString()
-            var kategori = binding!!.kategoribahan.text.toString()
+        binding?.lvbahan?.adapter = lvAdapter
 
-            if(nama == "") {
-                // toast
-            } else if(kategori == "") {
-                // toast
+        binding?.btnAdd?.setOnClickListener {
+            var _nama = binding!!.namabahan.text.toString()
+            var _kategori = binding!!.kategoribahan.text.toString()
+            var _gambar = binding!!.gambarbahan.text.toString()
+
+            if(_nama == "") {
+                Toast.makeText(requireContext(), "Nama bahan tidak boleh kosong", Toast.LENGTH_SHORT).show()
+            } else if(_kategori == "") {
+                Toast.makeText(requireContext(), "Kategori tidak boleh kosong", Toast.LENGTH_SHORT).show()
+            } else if(_gambar == "") {
+                Toast.makeText(requireContext(), "URL gambar tidak boleh kosong", Toast.LENGTH_SHORT).show()
             } else {
-                data.add("$nama-$kategori")
+                data.add("$_nama-$_kategori-$_gambar")
                 lvAdapter.notifyDataSetChanged()
                 binding!!.namabahan.setText("")
                 binding!!.kategoribahan.setText("")
+                binding!!.gambarbahan.setText("")
             }
         }
-
-        binding?.lvbahan?.adapter = lvAdapter
 
         val gestureDetector = GestureDetector(
             requireContext(),
@@ -139,14 +142,22 @@ class BahanFragment : Fragment() {
         etNewKategori.hint = "Masukkan Kategori baru"
         etNewKategori.setText(itemOld[1])
 
+        val etNewGambar = EditText(requireContext())
+        etNewGambar.hint = "Masukkan URL Gambar baru"
+        etNewGambar.setText(if(itemOld.size > 2) itemOld[2] else "")
+
         layout.addView(tvOld)
         layout.addView(etNewNama)
         layout.addView(etNewKategori)
+        layout.addView(etNewGambar)
 
         builder.setView(layout)
 
         builder.setPositiveButton("Simpan"){ dialog, which ->
-            val newValue = etNewNama.text.toString().trim() + "-" + etNewKategori.text.toString().trim()
+            val newValue = etNewNama.text.toString().trim() + "-" +
+                    etNewKategori.text.toString().trim() + "-" +
+                    etNewGambar.text.toString().trim()
+
             if (newValue.isNotEmpty()){
                 data[position] = newValue
                 adapter.notifyDataSetChanged()
