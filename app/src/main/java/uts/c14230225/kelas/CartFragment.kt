@@ -1,59 +1,156 @@
 package uts.c14230225.kelas
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import uts.c14230225.kelas.databinding.FragmentCartBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [CartFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CartFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private var binding: FragmentCartBinding? = null
+    lateinit var sp: SharedPreferences
+    var cartList: MutableList<Bahan> = mutableListOf()
+    private lateinit var adapter: CartAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cart, container, false)
+        binding = FragmentCartBinding.inflate(inflater, container, false)
+
+        sp = requireActivity().getSharedPreferences("datashared", Context.MODE_PRIVATE)
+
+        // Load cart dari SharedPreferences
+        loadCart()
+
+        // Setup RecyclerView
+        adapter = CartAdapter(cartList) { position, bahan ->
+            removeFromCart(position, bahan)
+        }
+
+        binding?.rvCart?.layoutManager = LinearLayoutManager(requireContext())
+        binding?.rvCart?.adapter = adapter
+
+        // Update tampilan
+        updateUI()
+
+        // Tombol clear cart
+        binding?.btnClearCart?.setOnClickListener {
+            showClearCartDialog()
+        }
+
+        return binding?.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CartFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CartFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    // Load cart dari SharedPreferences
+    private fun loadCart() {
+        var gson = Gson()
+        var isicart = sp.getString("dt_cart", null)
+        var type = object : TypeToken<ArrayList<Bahan>>() {}.type
+
+        cartList.clear()
+        if (isicart != null) {
+            val tempList: MutableList<Bahan> = gson.fromJson(isicart, type)
+            cartList.addAll(tempList)
+        }
+    }
+
+    // Hapus item dari cart
+    private fun removeFromCart(position: Int, bahan: Bahan) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Hapus dari Keranjang")
+            .setMessage("Yakin ingin menghapus ${bahan.namaBahan} dari keranjang?")
+            .setPositiveButton("Hapus") { _, _ ->
+                cartList.removeAt(position)
+                adapter.notifyItemRemoved(position)
+
+                // Simpan perubahan ke SharedPreferences
+                saveCart()
+
+                Toast.makeText(
+                    requireContext(),
+                    "${bahan.namaBahan} dihapus dari keranjang",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                // Update tampilan
+                updateUI()
             }
+            .setNegativeButton("Batal", null)
+            .show()
+    }
+
+    // Simpan cart ke SharedPreferences
+    private fun saveCart() {
+        var gson = Gson()
+        sp.edit().putString("dt_cart", gson.toJson(cartList)).apply()
+    }
+
+    // Clear semua cart
+    private fun showClearCartDialog() {
+        if (cartList.isEmpty()) {
+            Toast.makeText(requireContext(), "Keranjang sudah kosong", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Kosongkan Keranjang")
+            .setMessage("Yakin ingin menghapus semua barang dari keranjang?")
+            .setPositiveButton("Ya") { _, _ ->
+                cartList.clear()
+                adapter.notifyDataSetChanged()
+
+                // Hapus dari SharedPreferences
+                sp.edit().remove("dt_cart").apply()
+
+                Toast.makeText(
+                    requireContext(),
+                    "Keranjang berhasil dikosongkan",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                // Update tampilan
+                updateUI()
+            }
+            .setNegativeButton("Batal", null)
+            .show()
+    }
+
+    // Update UI berdasarkan isi cart
+    private fun updateUI() {
+        if (cartList.isEmpty()) {
+            binding?.rvCart?.visibility = View.GONE
+            binding?.tvEmptyCart?.visibility = View.VISIBLE
+            binding?.btnClearCart?.isEnabled = false
+        } else {
+            binding?.rvCart?.visibility = View.VISIBLE
+            binding?.tvEmptyCart?.visibility = View.GONE
+            binding?.btnClearCart?.isEnabled = true
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadCart()
+        adapter.notifyDataSetChanged()
+        updateUI()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 }
