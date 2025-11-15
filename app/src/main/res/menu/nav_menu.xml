@@ -19,9 +19,13 @@
 
     <item
         android:id="@+id/bahanFragment2"
-        android:icon="@drawable/outline_settings_24"
+        android:icon="@drawable/ic_bahan"
         android:title="BAHAN"/>
 
+    <item
+        android:id="@+id/cartFragment"
+        android:icon="@drawable/baseline_shopping_cart_24"
+        android:title="CART"/>
 
     <item
         android:title="CONFIDENTIAL">

@@ -46,8 +46,10 @@
         android:id="@+id/btnClearCart"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Kosongkan Keranjang"
         android:backgroundTint="@android:color/holo_red_dark"
+        android:text="Kosongkan Keranjang"
+        android:textColor="@color/white"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
