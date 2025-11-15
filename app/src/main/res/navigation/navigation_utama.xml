@@ -40,5 +40,18 @@
         android:id="@+id/bahanFragment2"
         android:name="uts.c14230225.kelas.BahanFragment"
         android:label="fragment_bahan"
-        tools:layout="@layout/fragment_bahan" />
+        tools:layout="@layout/fragment_bahan" >
+        <action
+            android:id="@+id/action_bahanFragment2_to_cartFragment"
+            app:destination="@id/cartFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="uts.c14230225.kelas.CartFragment"
+        android:label="fragment_cart"
+        tools:layout="@layout/fragment_cart" />
 </navigation>
