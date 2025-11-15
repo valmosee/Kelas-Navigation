@@ -6,40 +6,53 @@
     android:padding="16dp"
     android:background="?attr/selectableItemBackground">
 
+    <!-- CheckBox untuk tandai sudah dibeli -->
+    <CheckBox
+        android:id="@+id/cbBought"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Tandai sudah dibeli"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
     <TextView
         android:id="@+id/tvNamaCart"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="Nama Bahan"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="#000000"
         app:layout_constraintEnd_toStartOf="@+id/btnRemoveFromCart"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cbBought"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvKategoriCart"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:text="Kategori"
         android:textSize="14sp"
         android:textColor="#666666"
         app:layout_constraintEnd_toStartOf="@+id/btnRemoveFromCart"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cbBought"
         app:layout_constraintTop_toBottomOf="@+id/tvNamaCart" />
 
     <TextView
         android:id="@+id/tvGambarCart"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:text="URL Gambar"
         android:textColor="#999999"
         android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@+id/btnRemoveFromCart"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cbBought"
         app:layout_constraintTop_toBottomOf="@+id/tvKategoriCart"
         app:layout_constraintBottom_toBottomOf="parent" />
 

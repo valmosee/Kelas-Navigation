@@ -36,10 +36,16 @@ class CartFragment : Fragment() {
         // Load cart dari SharedPreferences
         loadCart()
 
-        // Setup RecyclerView
-        adapter = CartAdapter(cartList) { position, bahan ->
-            removeFromCart(position, bahan)
-        }
+        // Setup RecyclerView dengan callback untuk mark as bought
+        adapter = CartAdapter(
+            cartList,
+            { position, bahan ->
+                removeFromCart(position, bahan)
+            },
+            { position, bahan ->
+                markAsBought(position, bahan)
+            }
+        )
 
         binding?.rvCart?.layoutManager = LinearLayoutManager(requireContext())
         binding?.rvCart?.adapter = adapter
@@ -66,6 +72,58 @@ class CartFragment : Fragment() {
             val tempList: MutableList<Bahan> = gson.fromJson(isicart, type)
             cartList.addAll(tempList)
         }
+    }
+
+    // Tandai item sudah dibeli
+    private fun markAsBought(position: Int, bahan: Bahan) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Tandai Sudah Dibeli")
+            .setMessage("Tandai ${bahan.namaBahan} sudah dibeli?")
+            .setPositiveButton("Ya") { _, _ ->
+                // Tambahkan ke dt_bought
+                addToBought(bahan)
+
+                // Hapus dari cart
+                cartList.removeAt(position)
+                adapter.notifyItemRemoved(position)
+
+                // Simpan perubahan ke SharedPreferences
+                saveCart()
+
+                Toast.makeText(
+                    requireContext(),
+                    "${bahan.namaBahan} ditandai sudah dibeli",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                // Update tampilan
+                updateUI()
+            }
+            .setNegativeButton("Batal") { _, _ ->
+                // Refresh adapter untuk uncheck checkbox
+                adapter.notifyItemChanged(position)
+            }
+            .setOnCancelListener {
+                // Refresh adapter jika dialog dibatalkan
+                adapter.notifyItemChanged(position)
+            }
+            .show()
+    }
+
+    // Tambahkan item ke dt_bought
+    private fun addToBought(bahan: Bahan) {
+        var gson = Gson()
+        var isibought = sp.getString("dt_bought", null)
+        var type = object : TypeToken<ArrayList<Bahan>>() {}.type
+
+        var boughtList: MutableList<Bahan> = if (isibought != null) {
+            gson.fromJson(isibought, type)
+        } else {
+            mutableListOf()
+        }
+
+        boughtList.add(bahan)
+        sp.edit().putString("dt_bought", gson.toJson(boughtList)).apply()
     }
 
     // Hapus item dari cart
@@ -144,6 +202,7 @@ class CartFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        // Reload cart setiap kali fragment ditampilkan
         loadCart()
         adapter.notifyDataSetChanged()
         updateUI()
