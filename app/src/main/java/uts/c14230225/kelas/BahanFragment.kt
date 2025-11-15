@@ -2,24 +2,22 @@ package uts.c14230225.kelas
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.view.GestureDetector
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import uts.c14230225.kelas.databinding.FragmentBahanBinding
 
 class BahanFragment : Fragment() {
 
     private var binding: FragmentBahanBinding? = null
     var data = mutableListOf<String>()
+    private lateinit var adapter: BahanAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,15 +31,19 @@ class BahanFragment : Fragment() {
             inflater, container, false
         )
 
-        data.addAll(listOf("Gula-Bumbu", "Garam-Bumbu", "Merica-Bumbu", "Ayam-Daging", "Sapi-Daging"))
+        data.addAll(listOf("Gula-Bumbu-https://example.com/gula.jpg",
+            "Garam-Bumbu-https://example.com/garam.jpg",
+            "Merica-Bumbu-https://example.com/merica.jpg",
+            "Ayam-Daging-https://example.com/ayam.jpg",
+            "Sapi-Daging-https://example.com/sapi.jpg"))
 
-        val lvAdapter : ArrayAdapter<String> = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_list_item_1,
-            data
-        )
+        // Setup RecyclerView
+        adapter = BahanAdapter(data) { position, selectedItem ->
+            showActionDialog(position, selectedItem, data, adapter)
+        }
 
-        binding?.lvbahan?.adapter = lvAdapter
+        binding?.rvbahan?.layoutManager = LinearLayoutManager(requireContext())
+        binding?.rvbahan?.adapter = adapter
 
         binding?.btnAdd?.setOnClickListener {
             var _nama = binding!!.namabahan.text.toString()
@@ -56,30 +58,11 @@ class BahanFragment : Fragment() {
                 Toast.makeText(requireContext(), "URL gambar tidak boleh kosong", Toast.LENGTH_SHORT).show()
             } else {
                 data.add("$_nama-$_kategori-$_gambar")
-                lvAdapter.notifyDataSetChanged()
+                adapter.notifyItemInserted(data.size - 1)
                 binding!!.namabahan.setText("")
                 binding!!.kategoribahan.setText("")
                 binding!!.gambarbahan.setText("")
             }
-        }
-
-        val gestureDetector = GestureDetector(
-            requireContext(),
-            object : GestureDetector.SimpleOnGestureListener() {
-                override fun onDoubleTap(e: MotionEvent): Boolean {
-                    val position = binding!!.lvbahan.pointToPosition(e.x.toInt(), e.y.toInt())
-
-                    if (position != ListView.INVALID_POSITION) {
-                        val selectedItem = data[position]
-                        showActionDialog(position, selectedItem, data, lvAdapter)
-                    }
-                    return true
-                }
-            }
-        )
-
-        binding!!.lvbahan.setOnTouchListener { _, event ->
-            gestureDetector.onTouchEvent(event)
         }
 
         return binding!!.root
@@ -89,7 +72,7 @@ class BahanFragment : Fragment() {
         position: Int,
         selectedItem: String,
         data: MutableList<String>,
-        adapter: ArrayAdapter<String>
+        adapter: BahanAdapter
     ) {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("ITEM $selectedItem")
@@ -101,7 +84,7 @@ class BahanFragment : Fragment() {
 
         builder.setNegativeButton("Hapus"){_,_ ->
             data.removeAt(position)
-            adapter.notifyDataSetChanged()
+            adapter.notifyItemRemoved(position)
             Toast.makeText(
                 requireContext(),
                 "Hapus Item $selectedItem",
@@ -119,7 +102,7 @@ class BahanFragment : Fragment() {
         position: Int,
         oldValue : String,
         data: MutableList<String>,
-        adapter: ArrayAdapter<String>
+        adapter: BahanAdapter
     ){
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Update Data")
@@ -160,7 +143,7 @@ class BahanFragment : Fragment() {
 
             if (newValue.isNotEmpty()){
                 data[position] = newValue
-                adapter.notifyDataSetChanged()
+                adapter.notifyItemChanged(position)
                 Toast.makeText(
                     requireContext(),
                     "Data diupdate jadi: $newValue",
