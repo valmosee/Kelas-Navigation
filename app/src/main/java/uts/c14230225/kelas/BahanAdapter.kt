@@ -3,18 +3,21 @@ package uts.c14230225.kelas
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class BahanAdapter(
     private val data: MutableList<String>,
-    private val onItemDoubleClick: (Int, String) -> Unit
+    private val onItemDoubleClick: (Int, String) -> Unit,
+    private val onAddToCart: (Int, String) -> Unit  // Tambah parameter baru
 ) : RecyclerView.Adapter<BahanAdapter.BahanViewHolder>() {
 
     inner class BahanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvNama: TextView = itemView.findViewById(R.id.tvNama)
         val tvKategori: TextView = itemView.findViewById(R.id.tvKategori)
         val tvGambar: TextView = itemView.findViewById(R.id.tvGambar)
+        val btnAddToCart: ImageButton = itemView.findViewById(R.id.btnAddToCart)
 
         private var lastClickTime = 0L
 
@@ -26,6 +29,11 @@ class BahanAdapter(
                     onItemDoubleClick(adapterPosition, data[adapterPosition])
                 }
                 lastClickTime = currentTime
+            }
+
+            // Handle click tombol cart
+            btnAddToCart.setOnClickListener {
+                onAddToCart(adapterPosition, data[adapterPosition])
             }
         }
     }

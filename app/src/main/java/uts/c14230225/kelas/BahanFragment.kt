@@ -65,9 +65,16 @@ class BahanFragment : Fragment() {
         }
 
         // Setup RecyclerView
-        adapter = BahanAdapter(data) { position, selectedItem ->
-            showActionDialog(position, selectedItem, data, adapter)
-        }
+        adapter = BahanAdapter(
+            data,
+            { position, selectedItem ->
+                showActionDialog(position, selectedItem, data, adapter)
+            },
+            { position, selectedItem ->
+                // Handle add to cart
+                addToCart(selectedItem)
+            }
+        )
 
         binding?.rvbahan?.layoutManager = LinearLayoutManager(requireContext())
         binding?.rvbahan?.adapter = adapter
@@ -100,6 +107,29 @@ class BahanFragment : Fragment() {
         }
 
         return binding!!.root
+    }
+
+    // Fungsi tambah ke cart
+    fun addToCart(item: String) {
+        var gson = Gson()
+        sp = requireActivity().getSharedPreferences("datashared", Context.MODE_PRIVATE)
+        var isicart = sp.getString("dt_cart", null)
+        var type = object : TypeToken<ArrayList<Bahan>>() {}.type
+
+        var cartList: MutableList<Bahan> = if(isicart != null) {
+            gson.fromJson(isicart, type)
+        } else {
+            mutableListOf()
+        }
+
+        // Parse item
+        val split = item.split('-')
+        if(split.size >= 3) {
+            cartList.add(Bahan(split[0], split[1], split[2]))
+            sp.edit().putString("dt_cart", gson.toJson(cartList)).apply()
+
+            Toast.makeText(requireContext(), "${split[0]} ditambahkan ke cart", Toast.LENGTH_SHORT).show()
+        }
     }
 
     // Fungsi select bahan dari SharedPreferences
