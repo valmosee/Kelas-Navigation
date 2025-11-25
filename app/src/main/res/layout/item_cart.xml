@@ -62,13 +62,13 @@
     <!-- Tombol Remove from Cart -->
     <ImageButton
         android:id="@+id/btnRemoveFromCart"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_delete"
         android:contentDescription="Remove from cart"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

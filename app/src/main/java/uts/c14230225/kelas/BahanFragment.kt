@@ -16,6 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import uts.c14230225.kelas.databinding.FragmentBahanBinding
+import org.xmlpull.v1.XmlPullParserFactory
+import org.xmlpull.v1.XmlSerializer
+import java.io.File
+import java.io.FileOutputStream
 
 class BahanFragment : Fragment() {
     private var binding: FragmentBahanBinding? = null
@@ -102,8 +106,12 @@ class BahanFragment : Fragment() {
                 binding!!.kategoribahan.setText("")
                 binding!!.gambarbahan.setText("")
 
+
                 Toast.makeText(requireContext(), "Data berhasil ditambahkan", Toast.LENGTH_SHORT).show()
             }
+        }
+        binding?.btnExportXml?.setOnClickListener {
+            savetofile()
         }
 
         return binding!!.root
@@ -294,5 +302,56 @@ class BahanFragment : Fragment() {
         }
 
         builder.create().show()
+    }
+
+    fun savetofile() {
+        try {
+            val sharedPref = context?.getSharedPreferences("datashared", Context.MODE_PRIVATE)
+            val allData = sharedPref?.all
+
+            val file = File(context?.filesDir, "save.xml")
+            val fos = FileOutputStream(file)
+
+            val xmlFactory = XmlPullParserFactory.newInstance()
+            val serializer: XmlSerializer = xmlFactory.newSerializer()
+            serializer.setOutput(fos, "UTF-8")
+
+            serializer.startDocument("UTF-8", true)
+            serializer.startTag(null, "sharedpreferences")
+
+            if (allData != null) {
+                for ((key, value) in allData) {
+                    serializer.startTag(null, "entry")
+                    serializer.attribute(null, "key", key)
+                    serializer.attribute(null, "type", value?.javaClass?.simpleName ?: "null")
+                    serializer.text(value.toString())
+                    serializer.endTag(null, "entry")
+                }
+            }
+
+            serializer.endTag(null, "sharedpreferences")
+            serializer.endDocument()
+            serializer.flush()
+            fos.close()
+
+            Toast.makeText(
+                requireContext(),
+                "Data berhasil di-export ke XML!\nPath: ${file.absolutePath}",
+                Toast.LENGTH_LONG
+            ).show()
+
+            android.util.Log.d("SaveToFile", "XML saved successfully")
+            android.util.Log.d("SaveToFile", "Path: ${file.absolutePath}")
+
+        } catch (e: Exception) {
+            Toast.makeText(
+                requireContext(),
+                "Error export XML: ${e.message}",
+                Toast.LENGTH_LONG
+            ).show()
+
+            android.util.Log.e("SaveToFile", "Error: ${e.message}")
+            e.printStackTrace()
+        }
     }
 }

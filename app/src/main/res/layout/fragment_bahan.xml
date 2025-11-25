@@ -11,7 +11,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvbahan"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="455dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
@@ -65,15 +65,27 @@
 
     <Button
         android:id="@+id/btnAdd"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@android:color/holo_green_light"
         android:text="Add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/gambarbahan"
+        app:layout_constraintEnd_toStartOf="@+id/btnExportXml"
         app:layout_constraintStart_toStartOf="@+id/gambarbahan"
         app:layout_constraintTop_toBottomOf="@+id/gambarbahan" />
 
+    <Button
+        android:id="@+id/btnExportXml"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:backgroundTint="@color/material_dynamic_primary40"
+        android:text="Export to XML"
+        app:layout_constraintBottom_toBottomOf="@+id/btnAdd"
+        app:layout_constraintEnd_toEndOf="@+id/gambarbahan"
+        app:layout_constraintStart_toEndOf="@+id/btnAdd"
+        app:layout_constraintTop_toTopOf="@+id/btnAdd" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
